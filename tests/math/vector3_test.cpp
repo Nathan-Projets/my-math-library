@@ -26,6 +26,10 @@ TEST(Vector3, MethodAdd_ShouldWorkSuccessfully)
     first.add(my::math::Vector3{-5.0f});
     bool allZeros = first.x == 0.0f && first.y == 0.0f && first.z == 0.0f;
     EXPECT_TRUE(allZeros);
+
+    first.add(1.0f);
+    bool allOnes = first.x == 1.0f && first.y == 1.0f && first.z == 1.0f;
+    EXPECT_TRUE(allOnes);
 }
 
 TEST(Vector3, MethodSubtract_ShouldWorkSuccessfully)
@@ -39,6 +43,16 @@ TEST(Vector3, MethodSubtract_ShouldWorkSuccessfully)
     first.subtract(my::math::Vector3{-1.0f});
     bool allOnes = first.x == 1.0f && first.y == 1.0f && first.z == 1.0f;
     EXPECT_TRUE(allOnes);
+
+    first.subtract(1.0f);
+    allZeroes = first.x == 0.0f && first.y == 0.0f && first.z == 0.0f;
+    EXPECT_TRUE(allZeroes);
+}
+
+TEST(Vector3, MethodLength_ShouldReturnCorrectMagnitude)
+{
+    my::math::Vector3 result(6.0f, 8.0f, 0.0f);
+    EXPECT_EQ(result.length(), 10.0f);
 }
 
 TEST(Vector3, AddTwoVectors_WithOperator_ShouldWorkSuccessfully)
@@ -48,6 +62,38 @@ TEST(Vector3, AddTwoVectors_WithOperator_ShouldWorkSuccessfully)
     my::math::Vector3 result = first + second;
     bool allFives = result.x == 5.0f && result.y == 5.0f && result.z == 5.0f;
     EXPECT_TRUE(allFives);
+}
+
+TEST(Vector3, AddScalarToVector_WithOperator_ShouldWorkSuccessfully)
+{
+    my::math::Vector3 first(1.0f, 1.0f, 1.0f);
+    my::math::Vector3 result = first + 1.0f;
+    bool allTwos = result.x == 2.0f && result.y == 2.0f && result.z == 2.0f;
+    EXPECT_TRUE(allTwos);
+}
+
+TEST(Vector3, AddOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
+{
+    my::math::Vector3 first(1.0f, 1.0f, 1.0f);
+    first += 1.0f;
+    bool allTwos = first.x == 2.0f && first.y == 2.0f && first.z == 2.0f;
+    EXPECT_TRUE(allTwos);
+}
+
+TEST(Vector3, SubtractScalarToVector_WithOperator_ShouldWorkSuccessfully)
+{
+    my::math::Vector3 first(3.0f, 3.0f, 3.0f);
+    my::math::Vector3 result = first - 1.0f;
+    bool allTwos = result.x == 2.0f && result.y == 2.0f && result.z == 2.0f;
+    EXPECT_TRUE(allTwos);
+}
+
+TEST(Vector3, SubtractOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
+{
+    my::math::Vector3 first(3.0f, 3.0f, 3.0f);
+    first -= 1.0f;
+    bool allTwos = first.x == 2.0f && first.y == 2.0f && first.z == 2.0f;
+    EXPECT_TRUE(allTwos);
 }
 
 TEST(Vector3, AddOneVectorToTheOther_WithOperator_ShouldWorkSuccessfully)
