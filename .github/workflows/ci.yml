@@ -1,0 +1,33 @@
+name: pipeline CI c++
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      -  uses: actions/checkout@v4
+
+      - name: install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+          cmake \
+          ninja-build \
+          g++
+      
+      - name: configure cmake
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
+
+      - name: build cmake
+        run: |
+          cmake --build build
+      
+      - name: testing
+        working-directory: build/tests
+        run: ctest --output-on-failure
