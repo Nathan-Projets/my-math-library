@@ -2,7 +2,7 @@
 
 namespace my::math
 {
-    void Vector3::add(float scalar)
+    void Vector3::add(double scalar)
     {
         x += scalar;
         y += scalar;
@@ -16,7 +16,7 @@ namespace my::math
         z += other.z;
     }
 
-    void Vector3::subtract(float scalar)
+    void Vector3::subtract(double scalar)
     {
         x -= scalar;
         y -= scalar;
@@ -30,14 +30,14 @@ namespace my::math
         z -= other.z;
     }
 
-    void Vector3::scale(float scalar)
+    void Vector3::scale(double scalar)
     {
         x *= scalar;
         y *= scalar;
         z *= scalar;
     }
 
-    float Vector3::dot(const Vector3 &other) const
+    double Vector3::dot(const Vector3 &other) const
     {
         return x * other.x + y * other.y + z * other.z;
     }
@@ -51,7 +51,21 @@ namespace my::math
         return result;
     }
 
-    float Vector3::length() const
+    Vector3 Vector3::projectedOnto(const Vector3 &other) const
+    {
+        double scaling = this->dot(other);
+        double otherMagnitude = other.magnitude();
+        double otherMagnitudeSquared = otherMagnitude * otherMagnitude;
+
+        if (otherMagnitudeSquared == 0.0)
+        {
+            return Vector3{};
+        }
+
+        return other * (scaling / otherMagnitudeSquared);
+    }
+
+    double Vector3::magnitude() const
     {
         return std::sqrt(x * x + y * y + z * z);
     }
@@ -66,42 +80,42 @@ namespace my::math
     {
     }
 
-    Vector3::Vector3(float scalar) : x(scalar), y(scalar), z(scalar)
+    Vector3::Vector3(double scalar) : x(scalar), y(scalar), z(scalar)
     {
     }
 
-    Vector3::Vector3(float x, float y, float z) : x(x), y(y), z(z)
+    Vector3::Vector3(double x, double y, double z) : x(x), y(y), z(z)
     {
     }
 
-    Vector3 Vector3::operator+(float scalar) const
+    Vector3 Vector3::operator+(double scalar) const
     {
         return Vector3(x + scalar, y + scalar, z + scalar);
     }
 
-    Vector3 &Vector3::operator+=(float scalar)
+    Vector3 &Vector3::operator+=(double scalar)
     {
         add(scalar);
         return *this;
     }
 
-    Vector3 Vector3::operator-(float scalar) const
+    Vector3 Vector3::operator-(double scalar) const
     {
         return Vector3(x - scalar, y - scalar, z - scalar);
     }
 
-    Vector3 &Vector3::operator-=(float scalar)
+    Vector3 &Vector3::operator-=(double scalar)
     {
         subtract(scalar);
         return *this;
     }
 
-    Vector3 Vector3::operator*(float scalar) const
+    Vector3 Vector3::operator*(double scalar) const
     {
         return Vector3(x * scalar, y * scalar, z * scalar);
     }
 
-    Vector3 &Vector3::operator*=(float scalar)
+    Vector3 &Vector3::operator*=(double scalar)
     {
         scale(scalar);
         return *this;
