@@ -5,16 +5,16 @@
 TEST(Vector3, Constructor_ShouldInitializeSuccessfully)
 {
     EXPECT_NO_THROW(my::math::Vector3 dummy);
-    EXPECT_NO_THROW(my::math::Vector3 dummy(1.0f));
-    EXPECT_NO_THROW(my::math::Vector3 dummy(1.0f, 2.0f, 3.0f));
+    EXPECT_NO_THROW(my::math::Vector3 dummy(1.0));
+    EXPECT_NO_THROW(my::math::Vector3 dummy(1.0, 2.0, 3.0));
 }
 
 TEST(Vector3, PublicAccessors_ShouldReturnCorrectValues)
 {
-    my::math::Vector3 first(1.0f, 2.0f, 3.0f);
-    EXPECT_EQ(first.x, 1.0f);
-    EXPECT_EQ(first.y, 2.0f);
-    EXPECT_EQ(first.z, 3.0f);
+    my::math::Vector3 first(1.0, 2.0, 3.0);
+    EXPECT_EQ(first.x, 1.0);
+    EXPECT_EQ(first.y, 2.0);
+    EXPECT_EQ(first.z, 3.0);
 }
 
 TEST(Vector3, SingleFloatConstructor_ShouldNotImplicitlyConvert)
@@ -25,154 +25,163 @@ TEST(Vector3, SingleFloatConstructor_ShouldNotImplicitlyConvert)
 
 TEST(Vector3, MethodAdd_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(1.0f);
+    my::math::Vector3 first(1.0);
 
-    first.add(my::math::Vector3{4.0f});
-    bool allFives = first.x == 5.0f && first.y == 5.0f && first.z == 5.0f;
+    first.add(my::math::Vector3{4.0});
+    bool allFives = first.x == 5.0 && first.y == 5.0 && first.z == 5.0;
     EXPECT_TRUE(allFives);
 
-    first.add(my::math::Vector3{-5.0f});
-    bool allZeros = first.x == 0.0f && first.y == 0.0f && first.z == 0.0f;
+    first.add(my::math::Vector3{-5.0});
+    bool allZeros = first.x == 0.0 && first.y == 0.0 && first.z == 0.0;
     EXPECT_TRUE(allZeros);
 
-    first.add(1.0f);
-    bool allOnes = first.x == 1.0f && first.y == 1.0f && first.z == 1.0f;
+    first.add(1.0);
+    bool allOnes = first.x == 1.0 && first.y == 1.0 && first.z == 1.0;
     EXPECT_TRUE(allOnes);
 }
 
 TEST(Vector3, MethodSubtract_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(1.0f);
+    my::math::Vector3 first(1.0);
 
-    first.subtract(my::math::Vector3{1.0f});
-    bool allZeroes = first.x == 0.0f && first.y == 0.0f && first.z == 0.0f;
+    first.subtract(my::math::Vector3{1.0});
+    bool allZeroes = first.x == 0.0 && first.y == 0.0 && first.z == 0.0;
     EXPECT_TRUE(allZeroes);
 
-    first.subtract(my::math::Vector3{-1.0f});
-    bool allOnes = first.x == 1.0f && first.y == 1.0f && first.z == 1.0f;
+    first.subtract(my::math::Vector3{-1.0});
+    bool allOnes = first.x == 1.0 && first.y == 1.0 && first.z == 1.0;
     EXPECT_TRUE(allOnes);
 
-    first.subtract(1.0f);
-    allZeroes = first.x == 0.0f && first.y == 0.0f && first.z == 0.0f;
+    first.subtract(1.0);
+    allZeroes = first.x == 0.0 && first.y == 0.0 && first.z == 0.0;
     EXPECT_TRUE(allZeroes);
 }
 
-// float dot(const Vector3 &other) const;
-// Vector3 cross(const Vector3 &other) const;
-
 TEST(Vector3, MethodScale_ShouldScaleVectorSuccessfully)
 {
-    my::math::Vector3 first(1.0f);
-    first.scale(2.0f);
-    bool allTwos = first.x == 2.0f && first.y == 2.0f && first.z == 2.0f;
+    my::math::Vector3 first(1.0);
+    first.scale(2.0);
+    bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
     EXPECT_TRUE(allTwos);
 }
 
 TEST(Vector3, MethodDot_ShouldGiveRightScalar)
 {
-    my::math::Vector3 first(1.0f);
-    my::math::Vector3 second(2.0f);
-    EXPECT_EQ(first.dot(second), 6.0f);
+    my::math::Vector3 first(1.0);
+    my::math::Vector3 second(2.0);
+    EXPECT_EQ(first.dot(second), 6.0);
 }
 
 TEST(Vector3, MethodCross_ShouldGiveRightScalar)
 {
-    my::math::Vector3 first(8.0f, 1.0f, 4.0f);
-    my::math::Vector3 second(3.0f, 2.0f, 1.0f);
+    my::math::Vector3 first(8.0, 1.0, 4.0);
+    my::math::Vector3 second(3.0, 2.0, 1.0);
     my::math::Vector3 result = first.cross(second);
-    my::math::Vector3 expected(-7.0f, 4.0f, 13.0f);
+    my::math::Vector3 expected(-7.0, 4.0, 13.0);
     EXPECT_EQ(result, expected);
 }
 
-TEST(Vector3, MethodLength_ShouldReturnCorrectMagnitude)
+TEST(Vector3, MethodProjectedOnto_ShouldGiveRightProjection)
 {
-    my::math::Vector3 result(6.0f, 8.0f, 0.0f);
-    EXPECT_EQ(result.length(), 10.0f);
+    my::math::Vector3 first(1.0, 3.0, 4.0);
+    my::math::Vector3 second(5.0, 2.0, 4.0);
+
+    my::math::Vector3 projection = first.projectedOnto(second);
+
+    EXPECT_NEAR(projection.x, 3.0, 1e-1f);
+    EXPECT_NEAR(projection.y, 1.2, 1e-1f);
+    EXPECT_NEAR(projection.z, 2.4, 1e-1f);
+}
+
+TEST(Vector3, MethodMagnitude_ShouldReturnCorrectMagnitude)
+{
+    my::math::Vector3 result(6.0, 8.0, 0.0);
+    EXPECT_EQ(result.magnitude(), 10.0);
 }
 
 TEST(Vector3, AddTwoVectors_WithOperator_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(1.0f, 2.0f, 3.0f);
-    my::math::Vector3 second(4.0f, 3.0f, 2.0f);
+    my::math::Vector3 first(1.0, 2.0, 3.0);
+    my::math::Vector3 second(4.0, 3.0, 2.0);
     my::math::Vector3 result = first + second;
-    bool allFives = result.x == 5.0f && result.y == 5.0f && result.z == 5.0f;
+    bool allFives = result.x == 5.0 && result.y == 5.0 && result.z == 5.0;
     EXPECT_TRUE(allFives);
 }
 
 TEST(Vector3, AddScalarToVector_WithOperator_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(1.0f);
-    my::math::Vector3 result = first + 1.0f;
-    bool allTwos = result.x == 2.0f && result.y == 2.0f && result.z == 2.0f;
+    my::math::Vector3 first(1.0);
+    my::math::Vector3 result = first + 1.0;
+    bool allTwos = result.x == 2.0 && result.y == 2.0 && result.z == 2.0;
     EXPECT_TRUE(allTwos);
 }
 
 TEST(Vector3, AddOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(1.0f);
-    first += 1.0f;
-    bool allTwos = first.x == 2.0f && first.y == 2.0f && first.z == 2.0f;
+    my::math::Vector3 first(1.0);
+    first += 1.0;
+    bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
     EXPECT_TRUE(allTwos);
 }
 
 TEST(Vector3, SubtractScalarToVector_WithOperator_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(3.0f);
-    my::math::Vector3 result = first - 1.0f;
-    bool allTwos = result.x == 2.0f && result.y == 2.0f && result.z == 2.0f;
+    my::math::Vector3 first(3.0);
+    my::math::Vector3 result = first - 1.0;
+    bool allTwos = result.x == 2.0 && result.y == 2.0 && result.z == 2.0;
     EXPECT_TRUE(allTwos);
 }
 
 TEST(Vector3, SubtractOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(3.0f);
-    first -= 1.0f;
-    bool allTwos = first.x == 2.0f && first.y == 2.0f && first.z == 2.0f;
+    my::math::Vector3 first(3.0);
+    first -= 1.0;
+    bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
     EXPECT_TRUE(allTwos);
 }
 
 TEST(Vector3, AddOneVectorToTheOther_WithOperator_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(1.0f, 2.0f, 3.0f);
-    my::math::Vector3 second(4.0f, 3.0f, 2.0f);
+    my::math::Vector3 first(1.0, 2.0, 3.0);
+    my::math::Vector3 second(4.0, 3.0, 2.0);
     first += second;
-    bool allFives = first.x == 5.0f && first.y == 5.0f && first.z == 5.0f;
+    bool allFives = first.x == 5.0 && first.y == 5.0 && first.z == 5.0;
     EXPECT_TRUE(allFives);
 }
 
 TEST(Vector3, AddMultipleVectorsToTheOther_WithOperator_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(1.0f, 2.0f, 3.0f);
-    my::math::Vector3 second(4.0f, 3.0f, 2.0f);
+    my::math::Vector3 first(1.0, 2.0, 3.0);
+    my::math::Vector3 second(4.0, 3.0, 2.0);
     first += second + second;
-    EXPECT_EQ(first.x, 9.0f);
-    EXPECT_EQ(first.y, 8.0f);
-    EXPECT_EQ(first.z, 7.0f);
+    EXPECT_EQ(first.x, 9.0);
+    EXPECT_EQ(first.y, 8.0);
+    EXPECT_EQ(first.z, 7.0);
 }
 
 TEST(Vector3, SubtractTwoVectors_WithOperator_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(2.0f);
-    my::math::Vector3 second(1.0f);
+    my::math::Vector3 first(2.0);
+    my::math::Vector3 second(1.0);
     my::math::Vector3 result = first - second;
-    bool allOnes = result.x == 1.0f && result.y == 1.0f && result.z == 1.0f;
+    bool allOnes = result.x == 1.0 && result.y == 1.0 && result.z == 1.0;
     EXPECT_TRUE(allOnes);
 }
 
 TEST(Vector3, SubtractOneVectorToTheOther_WithOperator_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(2.0f);
-    my::math::Vector3 second(1.0f);
+    my::math::Vector3 first(2.0);
+    my::math::Vector3 second(1.0);
     first -= second;
-    bool allOnes = first.x == 1.0f && first.y == 1.0f && first.z == 1.0f;
+    bool allOnes = first.x == 1.0 && first.y == 1.0 && first.z == 1.0;
     EXPECT_TRUE(allOnes);
 }
 
 TEST(Vector3, SubtractMultipleVectorsToTheOther_WithOperator_ShouldWorkSuccessfully)
 {
-    my::math::Vector3 first(2.0f);
-    my::math::Vector3 second(1.0f);
+    my::math::Vector3 first(2.0);
+    my::math::Vector3 second(1.0);
     first -= second - second;
-    bool allTwos = first.x == 2.0f && first.y == 2.0f && first.z == 2.0f;
+    bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
     EXPECT_TRUE(allTwos);
 }
