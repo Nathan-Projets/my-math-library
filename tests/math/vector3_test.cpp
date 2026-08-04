@@ -90,6 +90,36 @@ TEST(Vector3, MethodCross_ShouldGiveRightScalar)
     EXPECT_EQ(result, expected);
 }
 
+TEST(Vector3, MethodAngleDegrees_ShouldReturnCorrectAngleBetweenTwoVectorsInDegrees)
+{
+    my::math::Vector3 first(2.0, 7.0, 4.0);
+    my::math::Vector3 second(6.0, 3.0, 2.0);
+
+    double angle = first.angleDegrees(second);
+
+    EXPECT_NEAR(angle, 45.1609, 1e-4f);
+}
+
+TEST(Vector3, MethodAngleRadians_ShouldReturnCorrectAngleBetweenTwoVectorsInRadians)
+{
+    my::math::Vector3 first(2.0, 7.0, 4.0);
+    my::math::Vector3 second(6.0, 3.0, 2.0);
+
+    double angle = first.angleRadians(second);
+
+    EXPECT_NEAR(angle, 0.7882, 1e-4f);
+}
+
+TEST(Vector3, MethodDistance_ShouldReturnCorrectDistanceBetweenTwoVectors)
+{
+    my::math::Vector3 first(2.0, 7.0, 4.0);
+    my::math::Vector3 second(6.0, 3.0, 2.0);
+
+    double distance = first.distance(second);
+
+    EXPECT_EQ(distance, 6.0);
+}
+
 TEST(Vector3, MethodProjectedOnto_ShouldGiveRightProjection)
 {
     my::math::Vector3 first(1.0, 3.0, 4.0);
