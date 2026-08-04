@@ -29,6 +29,7 @@ namespace my::math
 
         void normalize();
         Vector3 normalized() const;
+        bool isNormalized() const;
 
         Vector3();
         explicit Vector3(double scalar); // note: I don't want `.dot(double)` to be implicitely converted to `.dot(Vector3)`
