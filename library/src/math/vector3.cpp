@@ -99,6 +99,13 @@ namespace my::math
         return {x / norm, y / norm, z / norm};
     }
 
+    bool Vector3::isNormalized() const
+    {
+        // note: This is restrict the whole implementation to double/float, not sure how I will separate later on when implementing generic vectors
+        const double tolerance = 1e-12;
+        return std::abs(magnitude() - 1.0) <= tolerance;
+    }
+
     /**
      * ========================================
      * ========================================
@@ -187,6 +194,7 @@ namespace my::math
         return *this;
     }
 
+    // TODO: review the whole file to check double comparisons so it uses a tolerance based comparison everywhere
     bool Vector3::operator==(const Vector3 &other) const
     {
         return x == other.x && y == other.y && z == other.z;

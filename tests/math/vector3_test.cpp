@@ -118,6 +118,13 @@ TEST(Vector3, MethodNormalize_ShouldNormalizeMutateVectorWithCorrectValues)
     EXPECT_EQ(first.magnitude(), 1.0); // should be unit vector after normalization
 }
 
+TEST(Vector3, MethodIsNormalized_ShouldReturnTrueWhenVectorIsNormalized)
+{
+    my::math::Vector3 first(1.0, 2.0, 3.0);
+    first.normalize();
+    EXPECT_TRUE(first.isNormalized());
+}
+
 TEST(Vector3, MethodNormalized_ShouldReturnCorrectNormalizedVector)
 {
     my::math::Vector3 first(1.0, 2.0, 3.0);
