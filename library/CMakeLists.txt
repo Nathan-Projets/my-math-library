@@ -1,6 +1,7 @@
 add_library(
    MyMathLibrary
 
+   src/math/double.cpp
    src/math/vector3.cpp
 )
 
