@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
-#include <math/vector3.hpp>
+
 #include <type_traits>
+
+#include <math/double.hpp>
+#include <math/vector3.hpp>
 
 TEST(Vector3, Constructor_ShouldInitializeSuccessfully)
 {
@@ -13,9 +16,9 @@ TEST(Vector3, Constructor_ShouldInitializeSuccessfully)
 TEST(Vector3, PublicAccessors_ShouldReturnCorrectValues)
 {
     my::math::Vector3 first(1.0, 2.0, 3.0);
-    EXPECT_EQ(first.x, 1.0);
-    EXPECT_EQ(first.y, 2.0);
-    EXPECT_EQ(first.z, 3.0);
+    EXPECT_TRUE(my::math::almostEqual(first.x, 1.0));
+    EXPECT_TRUE(my::math::almostEqual(first.y, 2.0));
+    EXPECT_TRUE(my::math::almostEqual(first.z, 3.0));
 }
 
 TEST(Vector3, SingleFloatConstructor_ShouldNotImplicitlyConvert)
@@ -29,16 +32,13 @@ TEST(Vector3, MethodAdd_ShouldWorkSuccessfully)
     my::math::Vector3 first(1.0);
 
     first.add(my::math::Vector3{4.0});
-    bool allFives = first.x == 5.0 && first.y == 5.0 && first.z == 5.0;
-    EXPECT_TRUE(allFives);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3{5.0}));
 
     first.add(my::math::Vector3{-5.0});
-    bool allZeros = first.x == 0.0 && first.y == 0.0 && first.z == 0.0;
-    EXPECT_TRUE(allZeros);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(0.0)));
 
     first.add(1.0);
-    bool allOnes = first.x == 1.0 && first.y == 1.0 && first.z == 1.0;
-    EXPECT_TRUE(allOnes);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(1.0)));
 }
 
 TEST(Vector3, MethodSubtract_ShouldWorkSuccessfully)
@@ -46,39 +46,34 @@ TEST(Vector3, MethodSubtract_ShouldWorkSuccessfully)
     my::math::Vector3 first(1.0);
 
     first.subtract(my::math::Vector3{1.0});
-    bool allZeroes = first.x == 0.0 && first.y == 0.0 && first.z == 0.0;
-    EXPECT_TRUE(allZeroes);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(0.0)));
 
     first.subtract(my::math::Vector3{-1.0});
-    bool allOnes = first.x == 1.0 && first.y == 1.0 && first.z == 1.0;
-    EXPECT_TRUE(allOnes);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(1.0)));
 
     first.subtract(1.0);
-    allZeroes = first.x == 0.0 && first.y == 0.0 && first.z == 0.0;
-    EXPECT_TRUE(allZeroes);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(0.0)));
 }
 
 TEST(Vector3, MethodScale_ShouldScaleVectorSuccessfully)
 {
     my::math::Vector3 first(1.0);
     first.scale(2.0);
-    bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
-    EXPECT_TRUE(allTwos);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(2.0)));
 }
 
 TEST(Vector3, MethodDivide_ShouldDivideVectorSuccessfully)
 {
     my::math::Vector3 first(4.0);
     first.divide(2.0);
-    bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
-    EXPECT_TRUE(allTwos);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(2.0)));
 }
 
 TEST(Vector3, MethodDot_ShouldGiveRightScalar)
 {
     my::math::Vector3 first(1.0);
     my::math::Vector3 second(2.0);
-    EXPECT_EQ(first.dot(second), 6.0);
+    EXPECT_TRUE(my::math::almostEqual(first.dot(second), 6.0));
 }
 
 TEST(Vector3, MethodCross_ShouldGiveRightScalar)
@@ -117,7 +112,7 @@ TEST(Vector3, MethodDistance_ShouldReturnCorrectDistanceBetweenTwoVectors)
 
     double distance = first.distance(second);
 
-    EXPECT_EQ(distance, 6.0);
+    EXPECT_TRUE(my::math::almostEqual(distance, 6.0));
 }
 
 TEST(Vector3, MethodProjectedOnto_ShouldGiveRightProjection)
@@ -135,7 +130,7 @@ TEST(Vector3, MethodProjectedOnto_ShouldGiveRightProjection)
 TEST(Vector3, MethodMagnitude_ShouldReturnCorrectMagnitude)
 {
     my::math::Vector3 result(6.0, 8.0, 0.0);
-    EXPECT_EQ(result.magnitude(), 10.0);
+    EXPECT_TRUE(my::math::almostEqual(result.magnitude(), 10.0));
 }
 
 TEST(Vector3, MethodNormalize_ShouldNormalizeMutateVectorWithCorrectValues)
@@ -145,7 +140,7 @@ TEST(Vector3, MethodNormalize_ShouldNormalizeMutateVectorWithCorrectValues)
     EXPECT_NEAR(first.x, 0.2672, 1e-4f);
     EXPECT_NEAR(first.y, 0.5345, 1e-4f);
     EXPECT_NEAR(first.z, 0.8018, 1e-4f);
-    EXPECT_EQ(first.magnitude(), 1.0); // should be unit vector after normalization
+    EXPECT_TRUE(my::math::almostEqual(first.magnitude(), 1.0)); // should be unit vector after normalization
 }
 
 TEST(Vector3, MethodIsNormalized_ShouldReturnTrueWhenVectorIsNormalized)
@@ -158,8 +153,7 @@ TEST(Vector3, MethodIsNormalized_ShouldReturnTrueWhenVectorIsNormalized)
 TEST(Vector3, MethodZero_ShouldReturnEmptyVector)
 {
     my::math::Vector3 zeroes = my::math::Vector3::Zero();
-    bool allZeroes = zeroes.x == 0.0 && zeroes.y == 0.0 && zeroes.z == 0.0;
-    EXPECT_TRUE(allZeroes);
+    EXPECT_TRUE(zeroes.almostEquals(my::math::Vector3(0.0)));
 }
 
 TEST(Vector3, MethodNormalized_ShouldReturnCorrectNormalizedVector)
@@ -176,72 +170,63 @@ TEST(Vector3, AddTwoVectors_WithOperator_ShouldWorkSuccessfully)
     my::math::Vector3 first(1.0, 2.0, 3.0);
     my::math::Vector3 second(4.0, 3.0, 2.0);
     my::math::Vector3 result = first + second;
-    bool allFives = result.x == 5.0 && result.y == 5.0 && result.z == 5.0;
-    EXPECT_TRUE(allFives);
+    EXPECT_TRUE(result.almostEquals(my::math::Vector3(5.0)));
 }
 
 TEST(Vector3, AddScalarToVector_WithOperator_ShouldWorkSuccessfully)
 {
     my::math::Vector3 first(1.0);
     my::math::Vector3 result = first + 1.0;
-    bool allTwos = result.x == 2.0 && result.y == 2.0 && result.z == 2.0;
-    EXPECT_TRUE(allTwos);
+    EXPECT_TRUE(result.almostEquals(my::math::Vector3(2.0)));
 }
 
 TEST(Vector3, AddOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
 {
     my::math::Vector3 first(1.0);
     first += 1.0;
-    bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
-    EXPECT_TRUE(allTwos);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(2.0)));
 }
 
 TEST(Vector3, SubtractScalarToVector_WithOperator_ShouldWorkSuccessfully)
 {
     my::math::Vector3 first(3.0);
     my::math::Vector3 result = first - 1.0;
-    bool allTwos = result.x == 2.0 && result.y == 2.0 && result.z == 2.0;
-    EXPECT_TRUE(allTwos);
+    EXPECT_TRUE(result.almostEquals(my::math::Vector3(2.0)));
 }
 
 TEST(Vector3, SubtractOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
 {
     my::math::Vector3 first(3.0);
     first -= 1.0;
-    bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
-    EXPECT_TRUE(allTwos);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(2.0)));
 }
 
 TEST(Vector3, MultiplyScalarToVector_WithOperator_ShouldWorkSuccessfully)
 {
     my::math::Vector3 first(3.0);
     my::math::Vector3 result = first * 2.0;
-    bool allSix = result.x == 6.0 && result.y == 6.0 && result.z == 6.0;
-    EXPECT_TRUE(allSix);
+    EXPECT_TRUE(result.almostEquals(my::math::Vector3(6.0)));
 }
 
 TEST(Vector3, MultiplyOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
 {
     my::math::Vector3 first(3.0);
     first *= 2.0;
-    bool allSix = first.x == 6.0 && first.y == 6.0 && first.z == 6.0;
-    EXPECT_TRUE(allSix);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(6.0)));
 }
 
 TEST(Vector3, DivideScalarToVector_WithOperator_ShouldWorkSuccessfully)
 {
     my::math::Vector3 first(6.0);
     my::math::Vector3 result = first / 2.0;
-    bool allThrees = result.x == 3.0 && result.y == 3.0 && result.z == 3.0;
-    EXPECT_TRUE(allThrees);
+    EXPECT_TRUE(result.almostEquals(my::math::Vector3(3.0)));
 }
 
 TEST(Vector3, DivideOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
 {
     my::math::Vector3 first(6.0);
     first /= 2.0;
-    bool allThrees = first.x == 3.0 && first.y == 3.0 && first.z == 3.0;
-    EXPECT_TRUE(allThrees);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(3.0)));
 }
 
 TEST(Vector3, AddOneVectorToTheOther_WithOperator_ShouldWorkSuccessfully)
@@ -249,8 +234,7 @@ TEST(Vector3, AddOneVectorToTheOther_WithOperator_ShouldWorkSuccessfully)
     my::math::Vector3 first(1.0, 2.0, 3.0);
     my::math::Vector3 second(4.0, 3.0, 2.0);
     first += second;
-    bool allFives = first.x == 5.0 && first.y == 5.0 && first.z == 5.0;
-    EXPECT_TRUE(allFives);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(5.0)));
 }
 
 TEST(Vector3, AddMultipleVectorsToTheOther_WithOperator_ShouldWorkSuccessfully)
@@ -258,9 +242,7 @@ TEST(Vector3, AddMultipleVectorsToTheOther_WithOperator_ShouldWorkSuccessfully)
     my::math::Vector3 first(1.0, 2.0, 3.0);
     my::math::Vector3 second(4.0, 3.0, 2.0);
     first += second + second;
-    EXPECT_EQ(first.x, 9.0);
-    EXPECT_EQ(first.y, 8.0);
-    EXPECT_EQ(first.z, 7.0);
+    EXPECT_TRUE(first.almostEquals({9.0, 8.0, 7.0}));
 }
 
 TEST(Vector3, SubtractTwoVectors_WithOperator_ShouldWorkSuccessfully)
@@ -268,8 +250,7 @@ TEST(Vector3, SubtractTwoVectors_WithOperator_ShouldWorkSuccessfully)
     my::math::Vector3 first(2.0);
     my::math::Vector3 second(1.0);
     my::math::Vector3 result = first - second;
-    bool allOnes = result.x == 1.0 && result.y == 1.0 && result.z == 1.0;
-    EXPECT_TRUE(allOnes);
+    EXPECT_TRUE(result.almostEquals(my::math::Vector3(1.0)));
 }
 
 TEST(Vector3, SubtractOneVectorToTheOther_WithOperator_ShouldWorkSuccessfully)
@@ -277,8 +258,7 @@ TEST(Vector3, SubtractOneVectorToTheOther_WithOperator_ShouldWorkSuccessfully)
     my::math::Vector3 first(2.0);
     my::math::Vector3 second(1.0);
     first -= second;
-    bool allOnes = first.x == 1.0 && first.y == 1.0 && first.z == 1.0;
-    EXPECT_TRUE(allOnes);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(1.0)));
 }
 
 TEST(Vector3, SubtractMultipleVectorsToTheOther_WithOperator_ShouldWorkSuccessfully)
@@ -286,6 +266,5 @@ TEST(Vector3, SubtractMultipleVectorsToTheOther_WithOperator_ShouldWorkSuccessfu
     my::math::Vector3 first(2.0);
     my::math::Vector3 second(1.0);
     first -= second - second;
-    bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
-    EXPECT_TRUE(allTwos);
+    EXPECT_TRUE(first.almostEquals(my::math::Vector3(2.0)));
 }

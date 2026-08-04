@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <numbers>
 
+#include "math/double.hpp"
+
 namespace my::math
 {
     class Vector3

@@ -62,7 +62,7 @@ namespace my::math
     {
         double productAB = dot(other);
         double magnitudesAB = magnitude() * other.magnitude();
-        if (magnitudesAB == 0.0)
+        if (almostEqual(magnitudesAB, 0.0))
         {
             return 0.0; // TODO: error handling again failing here
         }
@@ -75,7 +75,7 @@ namespace my::math
     {
         double productAB = dot(other);
         double magnitudesAB = magnitude() * other.magnitude();
-        if (magnitudesAB == 0.0)
+        if (almostEqual(magnitudesAB, 0.0))
         {
             return 0.0; // TODO: error handling again failing here
         }
@@ -97,7 +97,7 @@ namespace my::math
         double otherMagnitude = other.magnitude();
         double otherMagnitudeSquared = otherMagnitude * otherMagnitude;
 
-        if (otherMagnitudeSquared == 0.0)
+        if (almostEqual(otherMagnitudeSquared, 0.0))
         {
             return Vector3{};
         }
@@ -113,7 +113,7 @@ namespace my::math
     void Vector3::normalize()
     {
         double norm = magnitude();
-        if (norm == 0.0)
+        if (almostEqual(norm, 0.0))
         {
             return; // will need some error handling to warn about these case instead of returning "empty" vector
         }
@@ -125,7 +125,7 @@ namespace my::math
     Vector3 Vector3::normalized() const
     {
         double norm = magnitude();
-        if (norm == 0.0)
+        if (almostEqual(norm, 0.0))
         {
             return Vector3{}; // will need some error handling to warn about these case instead of returning "empty" vector
         }
@@ -141,9 +141,9 @@ namespace my::math
 
     bool Vector3::almostEquals(const Vector3 &other, double tolerance) const
     {
-        bool isXEqual = std::abs(other.x - x) <= tolerance;
-        bool isYEqual = std::abs(other.y - y) <= tolerance;
-        bool isZEqual = std::abs(other.z - z) <= tolerance;
+        bool isXEqual = almostEqual(other.x, x);
+        bool isYEqual = almostEqual(other.y, y);
+        bool isZEqual = almostEqual(other.z, z);
         return isXEqual && isYEqual && isZEqual;
     }
 
@@ -158,7 +158,7 @@ namespace my::math
      *                 the rest
      */
 
-    Vector3::Vector3() : x(0.0f), y(0.0f), z(0.0f)
+    Vector3::Vector3() : x(0.0), y(0.0), z(0.0)
     {
     }
 
@@ -240,9 +240,8 @@ namespace my::math
         return *this;
     }
 
-    // TODO: review the whole file to check double comparisons so it uses a tolerance based comparison everywhere
     bool Vector3::operator==(const Vector3 &other) const
     {
-        return x == other.x && y == other.y && z == other.z;
+        return almostEquals(other);
     }
 }
