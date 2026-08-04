@@ -125,6 +125,13 @@ TEST(Vector3, MethodIsNormalized_ShouldReturnTrueWhenVectorIsNormalized)
     EXPECT_TRUE(first.isNormalized());
 }
 
+TEST(Vector3, MethodZero_ShouldReturnEmptyVector)
+{
+    my::math::Vector3 zeroes = my::math::Vector3::Zero();
+    bool allZeroes = zeroes.x == 0.0 && zeroes.y == 0.0 && zeroes.z == 0.0;
+    EXPECT_TRUE(allZeroes);
+}
+
 TEST(Vector3, MethodNormalized_ShouldReturnCorrectNormalizedVector)
 {
     my::math::Vector3 first(1.0, 2.0, 3.0);
