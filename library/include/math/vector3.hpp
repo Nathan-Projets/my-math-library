@@ -31,10 +31,12 @@ namespace my::math
         Vector3 normalized() const;
         bool isNormalized() const;
 
+        static Vector3 Zero();
+
         Vector3();
         explicit Vector3(double scalar); // note: I don't want `.dot(double)` to be implicitely converted to `.dot(Vector3)`
         Vector3(double x, double y, double z);
-        Vector3(const Vector3& vector);
+        Vector3(const Vector3 &vector);
 
         Vector3 operator+(double scalar) const;
         Vector3 &operator+=(double scalar);

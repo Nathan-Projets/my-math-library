@@ -106,6 +106,11 @@ namespace my::math
         return std::abs(magnitude() - 1.0) <= tolerance;
     }
 
+    Vector3 Vector3::Zero()
+    {
+        return Vector3{0.0};
+    }
+
     /**
      * ========================================
      * ========================================
