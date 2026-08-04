@@ -58,6 +58,39 @@ namespace my::math
         return result;
     }
 
+    double Vector3::angleDegrees(const Vector3 &other) const
+    {
+        double productAB = dot(other);
+        double magnitudesAB = magnitude() * other.magnitude();
+        if (magnitudesAB == 0.0)
+        {
+            return 0.0; // TODO: error handling again failing here
+        }
+        double theta = std::clamp(productAB / magnitudesAB, -1.0, 1.0);
+        constexpr double toDegreesConstant = 180.0 / std::numbers::pi;
+        return std::acos(theta) * toDegreesConstant;
+    }
+
+    double Vector3::angleRadians(const Vector3 &other) const
+    {
+        double productAB = dot(other);
+        double magnitudesAB = magnitude() * other.magnitude();
+        if (magnitudesAB == 0.0)
+        {
+            return 0.0; // TODO: error handling again failing here
+        }
+        double theta = std::clamp(productAB / magnitudesAB, -1.0, 1.0);
+        return std::acos(theta);
+    }
+
+    double Vector3::distance(const Vector3 &other) const
+    {
+        double xTemp = other.x - x;
+        double yTemp = other.y - y;
+        double zTemp = other.z - z;
+        return std::sqrt(xTemp * xTemp + yTemp * yTemp + zTemp * zTemp);
+    }
+
     Vector3 Vector3::projectedOnto(const Vector3 &other) const
     {
         double scaling = this->dot(other);
@@ -104,6 +137,14 @@ namespace my::math
         // note: This is restrict the whole implementation to double/float, not sure how I will separate later on when implementing generic vectors
         const double tolerance = 1e-12;
         return std::abs(magnitude() - 1.0) <= tolerance;
+    }
+
+    bool Vector3::almostEquals(const Vector3 &other, double tolerance) const
+    {
+        bool isXEqual = std::abs(other.x - x) <= tolerance;
+        bool isYEqual = std::abs(other.y - y) <= tolerance;
+        bool isZEqual = std::abs(other.z - z) <= tolerance;
+        return isXEqual && isYEqual && isZEqual;
     }
 
     Vector3 Vector3::Zero()

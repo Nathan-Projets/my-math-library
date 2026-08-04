@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cmath>
+#include <algorithm>
+#include <numbers>
 
 namespace my::math
 {
@@ -23,6 +25,9 @@ namespace my::math
         double dot(const Vector3 &other) const;
         Vector3 cross(const Vector3 &other) const;
 
+        double angleDegrees(const Vector3 &other) const;
+        double angleRadians(const Vector3 &other) const;
+        double distance(const Vector3 &other) const;
         Vector3 projectedOnto(const Vector3 &other) const;
 
         double magnitude() const;
@@ -30,6 +35,8 @@ namespace my::math
         void normalize();
         Vector3 normalized() const;
         bool isNormalized() const;
+
+        bool almostEquals(const Vector3 &other, double tolerance = 1e-12) const;
 
         static Vector3 Zero();
 
