@@ -26,6 +26,9 @@ namespace my::math
 
         double magnitude() const;
 
+        void normalize();
+        Vector3 normalized() const;
+
         Vector3();
         explicit Vector3(double scalar); // note: I don't want `.dot(double)` to be implicitely converted to `.dot(Vector3)`
         Vector3(double x, double y, double z);

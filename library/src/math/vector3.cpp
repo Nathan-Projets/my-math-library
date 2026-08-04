@@ -70,6 +70,28 @@ namespace my::math
         return std::sqrt(x * x + y * y + z * z);
     }
 
+    void Vector3::normalize()
+    {
+        double norm = magnitude();
+        if (norm == 0.0)
+        {
+            return; // will need some error handling to warn about these case instead of returning "empty" vector
+        }
+        x /= norm;
+        y /= norm;
+        z /= norm;
+    }
+
+    Vector3 Vector3::normalized() const
+    {
+        double norm = magnitude();
+        if (norm == 0.0)
+        {
+            return Vector3{}; // will need some error handling to warn about these case instead of returning "empty" vector
+        }
+        return {x / norm, y / norm, z / norm};
+    }
+
     /**
      * ========================================
      * ========================================

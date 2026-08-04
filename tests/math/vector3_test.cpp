@@ -99,6 +99,25 @@ TEST(Vector3, MethodMagnitude_ShouldReturnCorrectMagnitude)
     EXPECT_EQ(result.magnitude(), 10.0);
 }
 
+TEST(Vector3, MethodNormalize_ShouldNormalizeMutateVectorWithCorrectValues)
+{
+    my::math::Vector3 first(1.0, 2.0, 3.0);
+    first.normalize();
+    EXPECT_NEAR(first.x, 0.2672, 1e-4f);
+    EXPECT_NEAR(first.y, 0.5345, 1e-4f);
+    EXPECT_NEAR(first.z, 0.8018, 1e-4f);
+    EXPECT_EQ(first.magnitude(), 1.0); // should be unit vector after normalization
+}
+
+TEST(Vector3, MethodNormalized_ShouldReturnCorrectNormalizedVector)
+{
+    my::math::Vector3 first(1.0, 2.0, 3.0);
+    my::math::Vector3 normalized = first.normalized();
+    EXPECT_NEAR(normalized.x, 0.2672, 1e-4f);
+    EXPECT_NEAR(normalized.y, 0.5345, 1e-4f);
+    EXPECT_NEAR(normalized.z, 0.8018, 1e-4f);
+}
+
 TEST(Vector3, AddTwoVectors_WithOperator_ShouldWorkSuccessfully)
 {
     my::math::Vector3 first(1.0, 2.0, 3.0);
