@@ -7,6 +7,7 @@ TEST(Vector3, Constructor_ShouldInitializeSuccessfully)
     EXPECT_NO_THROW(my::math::Vector3 dummy);
     EXPECT_NO_THROW(my::math::Vector3 dummy(1.0));
     EXPECT_NO_THROW(my::math::Vector3 dummy(1.0, 2.0, 3.0));
+    EXPECT_NO_THROW(my::math::Vector3 dummy(my::math::Vector3{1.0, 2.0, 3.0}));
 }
 
 TEST(Vector3, PublicAccessors_ShouldReturnCorrectValues)
@@ -61,6 +62,14 @@ TEST(Vector3, MethodScale_ShouldScaleVectorSuccessfully)
 {
     my::math::Vector3 first(1.0);
     first.scale(2.0);
+    bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
+    EXPECT_TRUE(allTwos);
+}
+
+TEST(Vector3, MethodDivide_ShouldDivideVectorSuccessfully)
+{
+    my::math::Vector3 first(4.0);
+    first.divide(2.0);
     bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
     EXPECT_TRUE(allTwos);
 }
@@ -157,6 +166,38 @@ TEST(Vector3, SubtractOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
     first -= 1.0;
     bool allTwos = first.x == 2.0 && first.y == 2.0 && first.z == 2.0;
     EXPECT_TRUE(allTwos);
+}
+
+TEST(Vector3, MultiplyScalarToVector_WithOperator_ShouldWorkSuccessfully)
+{
+    my::math::Vector3 first(3.0);
+    my::math::Vector3 result = first * 2.0;
+    bool allSix = result.x == 6.0 && result.y == 6.0 && result.z == 6.0;
+    EXPECT_TRUE(allSix);
+}
+
+TEST(Vector3, MultiplyOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
+{
+    my::math::Vector3 first(3.0);
+    first *= 2.0;
+    bool allSix = first.x == 6.0 && first.y == 6.0 && first.z == 6.0;
+    EXPECT_TRUE(allSix);
+}
+
+TEST(Vector3, DivideScalarToVector_WithOperator_ShouldWorkSuccessfully)
+{
+    my::math::Vector3 first(6.0);
+    my::math::Vector3 result = first / 2.0;
+    bool allThrees = result.x == 3.0 && result.y == 3.0 && result.z == 3.0;
+    EXPECT_TRUE(allThrees);
+}
+
+TEST(Vector3, DivideOneScalarToOneVector_WithOperator_ShouldWorkSuccessfully)
+{
+    my::math::Vector3 first(6.0);
+    first /= 2.0;
+    bool allThrees = first.x == 3.0 && first.y == 3.0 && first.z == 3.0;
+    EXPECT_TRUE(allThrees);
 }
 
 TEST(Vector3, AddOneVectorToTheOther_WithOperator_ShouldWorkSuccessfully)

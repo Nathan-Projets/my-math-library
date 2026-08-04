@@ -37,6 +37,13 @@ namespace my::math
         z *= scalar;
     }
 
+    void Vector3::divide(double scalar)
+    {
+        x /= scalar;
+        y /= scalar;
+        z /= scalar;
+    }
+
     double Vector3::dot(const Vector3 &other) const
     {
         return x * other.x + y * other.y + z * other.z;
@@ -110,6 +117,10 @@ namespace my::math
     {
     }
 
+    Vector3::Vector3(const Vector3 &vector) : x(vector.x), y(vector.y), z(vector.z)
+    {
+    }
+
     Vector3 Vector3::operator+(double scalar) const
     {
         return Vector3(x + scalar, y + scalar, z + scalar);
@@ -140,6 +151,17 @@ namespace my::math
     Vector3 &Vector3::operator*=(double scalar)
     {
         scale(scalar);
+        return *this;
+    }
+
+    Vector3 Vector3::operator/(double scalar) const
+    {
+        return Vector3(x / scalar, y / scalar, z / scalar);
+    }
+
+    Vector3 &Vector3::operator/=(double scalar)
+    {
+        divide(scalar);
         return *this;
     }
 
